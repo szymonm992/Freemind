@@ -2,14 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SawAnimation : MonoBehaviour {
-    List<Bullet> bullets = new List<Bullet>();
-    int bulletsCount = 0;
-    void Update() {
+public class SawAnimation : MonoBehaviour 
+{
+    private List<Bullet> bullets = new List<Bullet>();
+    private int bulletsCount = 0;
+
+    private void Update()
+    {
         ChangeSawRotation();
     }
 
-    void ChangeSawRotation() {
+    private void ChangeSawRotation() 
+    {
         var player = FindObjectOfType<PlayerController>();
         bullets = FindObjectsOfType<Bullet>().ToList();
         Random.seed = (int)(player.transform.position.x + player.transform.position.y + player.transform.position.z);
@@ -18,13 +22,19 @@ public class SawAnimation : MonoBehaviour {
         gameObject.transform.Rotate(angleDiff, 0, 0);        
     }
 
-    int CalculateBulletsCount(List<Bullet> bullets) {
+    private int CalculateBulletsCount(List<Bullet> bullets)
+    {
         bulletsCount = 0;
-        foreach (var bullet in bullets) 
+
+        foreach (var bullet in bullets)
+        {
             bulletsCount++;
+        }
         
         if (bulletsCount < 10)
+        {
             bulletsCount = 10;
+        }
 
         return bulletsCount;
     }

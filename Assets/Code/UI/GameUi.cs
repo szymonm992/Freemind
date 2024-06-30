@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUi : MonoBehaviour {
-    public Text label;
+public class GameUi : MonoBehaviour
+{
+    [SerializeField] private Text label;
+    [SerializeField] private Text enemiesLabel;
 
-    public Text enemiesLabel;
-
-    void Update() {
-        
+    private void Update() 
+    {
         var dedDragons = FindObjectsOfType<DragonAI>().Where(x => x.IsDed).ToList().Count;
         var livDragons = FindObjectsOfType<DragonAI>().Where(y => !y.IsDed).ToList().Count;
 
@@ -23,22 +21,25 @@ public class GameUi : MonoBehaviour {
         StartCoroutine(ShowTextAneQuitCoroutine(message));
     }
 
-    IEnumerator ShowTextAneQuitCoroutine(string message) {
+    private IEnumerator ShowTextAneQuitCoroutine(string message)
+    {
         yield return new WaitForSeconds(0.3f);
         ShowLabel(message);
         yield return new WaitForSeconds(0.5f);
         Stop();
     }
 
-    void ShowLabel(string message) {
+    private void ShowLabel(string message)
+    {
         label.text = message;
         label.gameObject.SetActive(true);
     }
 
-    void Stop() {
-#if UNITY_EDITOR
+    private void Stop()
+    {
+        #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        #endif
         Debug.Log("Level complete, stopping playmode\n");
     }
 }

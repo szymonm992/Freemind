@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +5,12 @@ using UnityEngine;
 
 public class DragonSpawner : MonoBehaviour
 {
-    public List<Transform> spawnPoints;
-    public GameObject dragonPrefab;
-        
-    IEnumerator Start() {
+    [SerializeField] private List<Transform> spawnPoints;
+    [SerializeField] private GameObject dragonPrefab;
+
+    
+    private IEnumerator Start()
+    {
         spawnPoints = GameObject.FindGameObjectsWithTag("Dragon Spawn Point")
                                 .Select(x => x.transform)
                                 .ToList();
@@ -28,7 +29,8 @@ public class DragonSpawner : MonoBehaviour
         }
     }
 
-    void SpawnDragon() {
+    private void SpawnDragon()
+    {
         var spawnPoint = spawnPoints[0];
         spawnPoints.RemoveAt(0);
 
