@@ -3,8 +3,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private float bulletsPerSeconds = 10;
-    [SerializeField] private float bulletSpeed = 100;
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private Transform bulletSpawnTransform;
 
     private float shotDeadline;
@@ -16,7 +15,10 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        AddVelocity(SpawnBullet());
+        var newBullet = SpawnBullet();
+        var bulletMovementDirection = Camera.main.ViewportPointToRay(new Vector3(0.49f, 0.51f, 0)).direction;
+        newBullet.Initialize(bulletMovementDirection);
+
         SetNextShootDeadline();
     }
 
@@ -25,18 +27,10 @@ public class Weapon : MonoBehaviour
         return shotDeadline > Time.timeSinceLevelLoad;
     }
 
-    private GameObject SpawnBullet()
+    private Bullet SpawnBullet()
     {
         var bulletGameObject = Instantiate(bulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation);
-        bulletGameObject.GetComponent<Bullet>().Initialize();
         return bulletGameObject;
-    }
-
-    private void AddVelocity(GameObject bulletGameObject)
-    {
-        var direction = Camera.main.ViewportPointToRay(new Vector3(0.49f, 0.51f, 0)).direction;
-        var bulletRigidbody = bulletGameObject.GetComponent<Rigidbody>();
-        bulletRigidbody.velocity += direction * bulletSpeed;
     }
 
     private void SetNextShootDeadline()

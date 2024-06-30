@@ -60,8 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletsPerSeconds: 10
-  bulletSpeed: 100
-  bulletPrefab: {fileID: 5827155943286945646, guid: 92cc3fb0b7f4b0b419556c01ac9d09d9, type: 3}
+  bulletPrefab: {fileID: 2162709962414365072, guid: 92cc3fb0b7f4b0b419556c01ac9d09d9, type: 3}
   bulletSpawnTransform: {fileID: 451799185358768752}
 --- !u!114 &6730044345510147775
 MonoBehaviour:
@@ -183,10 +182,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6774641924122874276}
     m_Modifications:
-    - target: {fileID: 859388276613407885, guid: 983d3c32751ffbf40b05493c52f50da9, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5010645991592904560, guid: 983d3c32751ffbf40b05493c52f50da9, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -29,7 +29,6 @@ namespace DragonsGame
             await StartSpawningDragons();
         }
 
-
         private async UniTask StartSpawningDragons()
         {
             while (true)
@@ -37,7 +36,7 @@ namespace DragonsGame
                 SpawnDragon();
 
                 var t = Mathf.Max(3 + AliveDragons / 10 - DeadDragons / 10, 1);
-                await UniTask.Delay(t * TimeSpan.FromSeconds(1f).Milliseconds);
+                await UniTask.Delay(TimeSpan.FromSeconds(t), true);
             }
         }
 

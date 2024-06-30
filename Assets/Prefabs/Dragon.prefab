@@ -2539,6 +2539,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff69597039e12424ca8157bf989ed32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 30
+  dragonAnimator: {fileID: 114949173259262144}
 --- !u!1 &1560433488539884
 GameObject:
   m_ObjectHideFlags: 0
