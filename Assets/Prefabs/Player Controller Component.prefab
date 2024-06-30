@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1097577280763963740}
   - component: {fileID: 5381217086340788112}
   - component: {fileID: 6730044345510147775}
+  - component: {fileID: 8521623405525995322}
   m_Layer: 0
   m_Name: Player Controller Component
   m_TagString: Untagged
@@ -60,8 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletsPerSeconds: 10
-  bulletPrefab: {fileID: 2162709962414365072, guid: 92cc3fb0b7f4b0b419556c01ac9d09d9, type: 3}
   bulletSpawnTransform: {fileID: 451799185358768752}
+  bulletsSpawner: {fileID: 8521623405525995322}
 --- !u!114 &6730044345510147775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +75,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee5fdd3d47b4a14191f96cb9abf6381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8521623405525995322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5214125130917759145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1419f9570a66ae84897a79fdfad015ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2162709962414365072, guid: 92cc3fb0b7f4b0b419556c01ac9d09d9, type: 3}
 --- !u!1 &6655840322289454721
 GameObject:
   m_ObjectHideFlags: 0

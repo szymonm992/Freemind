@@ -8,8 +8,9 @@ namespace DragonsGame.Pooling
     {
         private readonly T prefab;
         private readonly Queue<T> pool = new Queue<T>();
+        private readonly int repopulatingSize;
 
-        public MonoObjectPool(T prefab, int initialSize)
+        public MonoObjectPool(T prefab, int initialSize, int repopulatingSize)
         {
             this.prefab = prefab;
             PopulatePool(initialSize).Forget();
@@ -33,15 +34,22 @@ namespace DragonsGame.Pooling
             await UniTask.WaitUntil(() => pool.Count == (currentPoolAmount + objectsAmount));
         }
 
-        public async UniTask<T> GetFreeObject()
+        public async UniTask<T> GetFreeObject(Transform newObjectTransform = null)
         {
             if (pool.Count == 0)
             {
-                await PopulatePool(10);
+                await PopulatePool(repopulatingSize);
             }
 
             T newObject = pool.Dequeue();
             newObject.gameObject.SetActive(true);
+
+            if (newObjectTransform != null)
+            {
+                newObject.transform.position = newObjectTransform.position;
+                newObject.transform.rotation = newObjectTransform.rotation;
+            }
+
             return newObject;
         }
 

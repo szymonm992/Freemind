@@ -1,22 +1,25 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace DragonsGame
 {
-    public event Action DeathEvent;
-
-    [SerializeField] private Weapon weapon;
-
-    public void Hit()
+    public class PlayerController : MonoBehaviour
     {
-        DeathEvent?.Invoke();
-    }
+        public event Action DeathEvent;
 
-    private void Update()
-    {
-        if (Input.GetMouseButton(0))
+        [SerializeField] private Weapon weapon;
+
+        public void Hit()
         {
-            weapon.Shoot();
+            DeathEvent?.Invoke();
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                weapon.Shoot();
+            }
         }
     }
 }

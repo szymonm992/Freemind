@@ -1,40 +1,37 @@
+using System;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+namespace DragonsGame
 {
-    [SerializeField] private float bulletsPerSeconds = 10;
-    [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private Transform bulletSpawnTransform;
-
-    private float shotDeadline;
-
-    public void Shoot() 
+    public class Weapon : MonoBehaviour
     {
-        if (IsReadyToShoot())
+        [SerializeField] private float bulletsPerSeconds = 10;
+        [SerializeField] private Transform bulletSpawnTransform;
+        [SerializeField] private BulletsSpawner bulletsSpawner;
+
+        private float shotDeadline;
+
+        public async void Shoot()
         {
-            return;
+            if (IsReadyToShoot())
+            {
+                return;
+            }
+
+            var newBullet = await bulletsSpawner.GetNew(bulletSpawnTransform);
+            var bulletMovementDirection = Camera.main.ViewportPointToRay(new Vector3(0.49f, 0.51f, 0)).direction;
+            newBullet.Initialize(bulletMovementDirection);
+
+            SetNextShootDeadline();
         }
 
-        var newBullet = SpawnBullet();
-        var bulletMovementDirection = Camera.main.ViewportPointToRay(new Vector3(0.49f, 0.51f, 0)).direction;
-        newBullet.Initialize(bulletMovementDirection);
-
-        SetNextShootDeadline();
-    }
-
-    private bool IsReadyToShoot()
-    {
-        return shotDeadline > Time.timeSinceLevelLoad;
-    }
-
-    private Bullet SpawnBullet()
-    {
-        var bulletGameObject = Instantiate(bulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation);
-        return bulletGameObject;
-    }
-
-    private void SetNextShootDeadline()
-    {
-        shotDeadline = Time.timeSinceLevelLoad + 1 / bulletsPerSeconds;
+        private bool IsReadyToShoot()
+        {
+            return shotDeadline > Time.timeSinceLevelLoad;
+        }
+        private void SetNextShootDeadline()
+        {
+            shotDeadline = Time.timeSinceLevelLoad + 1 / bulletsPerSeconds;
+        }
     }
 }
