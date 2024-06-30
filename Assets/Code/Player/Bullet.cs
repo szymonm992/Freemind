@@ -4,10 +4,10 @@ using Random = UnityEngine.Random;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private int damage = 10;
 
     private readonly Color[] colors = {Color.yellow, Color.red, Color.white, Color.blue, Color.green};
-    public int damage = 10;
-
+   
     public void Init()
     {
         SetRandomColor();

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class DragonAI : MonoBehaviour 
 {
-	
+	public event Action<DragonAI> DeathEvent;
+
 	/**
 	 * Uwaga: ten kod celowo jest taki paskudny. To część zadania. Zachęcam do posprzątania przy okazji.
 	 */
@@ -15,14 +16,14 @@ public class DragonAI : MonoBehaviour
 		 Dead
 	}
 
-	public int maxHP = 30;
-    public bool IsDed => state == State.Dead;
+	[SerializeField] private int maxHP = 30;
+    public bool IsDead => state == State.Dead;
 
-    private int hp;
+    private int currentHp;
 
     private void Start()
 	{
-		hp = maxHP;
+		currentHp = maxHP;
 		var renderers = GetComponentsInChildren<Renderer>();
 
 		foreach (var ren in renderers)
@@ -86,11 +87,12 @@ public class DragonAI : MonoBehaviour
 
 	public void DealDamage(int damage)
 	{
-		hp -= damage;
+		currentHp -= damage;
 		 
-		if (hp <= 0)
+		if (currentHp <= 0)
 		{
-			state = State.Dead;
+			DeathEvent?.Invoke(this);
+            state = State.Dead;
 		}
 	}
 }

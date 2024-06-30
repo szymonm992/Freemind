@@ -1,0 +1,16 @@
+{
+    "name": "DragonsGame.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f6a6d7e1d1df3434cbfc0a5ab867cc8e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -196,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: {fileID: 114065468990799926}
   enemiesLabel: {fileID: 8714088298586523885}
+  dragonSpawner: {fileID: 0}
 --- !u!1 &1312273540801747786
 GameObject:
   m_ObjectHideFlags: 0

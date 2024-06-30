@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
 
-public class RespawnOnCollision : MonoBehaviour
+namespace DragonsGame
 {
-    private void OnTriggerEnter(Collider other)
+    public class RespawnOnCollision : MonoBehaviour
     {
-        if (other.gameObject.tag == "Player")
+        private void OnTriggerEnter(Collider other)
         {
-            SpawnPoint.ResetPlayerPosition();
+            if (other.gameObject.tag == "Player")
+            {
+                SpawnPoint.ResetPlayerPosition();
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                SpawnPoint.ResetPlayerPosition();
+            }
         }
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            SpawnPoint.ResetPlayerPosition();
-        }    
-    }
 }

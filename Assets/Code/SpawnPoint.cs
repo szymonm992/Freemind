@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 
-public class SpawnPoint : MonoBehaviour
+namespace DragonsGame
 {
-    [SerializeField] private GameObject playerPrefab;
-    private GameObject player;
-    private static SpawnPoint instance;
-
-    private void Awake() 
+    public class SpawnPoint : MonoBehaviour
     {
-        instance = this;
-        player = Instantiate(playerPrefab);
-        ResetPlayerPosition();
-        player.name = "Player";
-        gameObject.SetActive(false);
-    }
+        [SerializeField] private GameObject playerPrefab;
+        private GameObject player;
+        private static SpawnPoint instance;
 
-    public static void ResetPlayerPosition()
-    {
-        if (instance == null)
+        private void Awake()
         {
-            Debug.LogError("No spawn point");
-            return;
+            instance = this;
+            player = Instantiate(playerPrefab);
+            ResetPlayerPosition();
+            player.name = "Player";
+            gameObject.SetActive(false);
         }
 
-        instance.player.transform.position = instance.transform.position;
-        instance.player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        public static void ResetPlayerPosition()
+        {
+            if (instance == null)
+            {
+                Debug.LogError("No spawn point");
+                return;
+            }
+
+            instance.player.transform.position = instance.transform.position;
+            instance.player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
     }
 }
