@@ -4,11 +4,12 @@ using Random = UnityEngine.Random;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private int damage = 10;
 
     private readonly Color[] colors = {Color.yellow, Color.red, Color.white, Color.blue, Color.green};
    
-    public void Init()
+    public void Initialize()
     {
         SetRandomColor();
     }
@@ -21,12 +22,11 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        GetComponent<Rigidbody>().useGravity = true;
-        var dragon = other.gameObject.GetComponent<DragonAI>();
+        rigidbody.useGravity = true;
 
-        if (dragon)
+        if (other.gameObject.TryGetComponent(out DragonAI dragonAi))
         {
-            dragon.DealDamage(damage);
-        }   
+            dragonAi.DealDamage(damage);
+        }
     }
 }

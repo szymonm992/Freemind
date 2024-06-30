@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
     private GameObject SpawnBullet()
     {
         var bulletGameObject = Instantiate(bulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation);
-        bulletGameObject.GetComponent<Bullet>().Init();
+        bulletGameObject.GetComponent<Bullet>().Initialize();
         return bulletGameObject;
     }
 
