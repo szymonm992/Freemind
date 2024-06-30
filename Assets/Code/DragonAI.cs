@@ -6,11 +6,7 @@ public class DragonAI : MonoBehaviour
 {
     public event Action<DragonAI> DeathEvent;
 
-    /**
-     * Uwaga: ten kod celowo jest taki paskudny. To część zadania. Zachęcam do posprzątania przy okazji.
-     */
-
-    public enum State
+    public enum EnemyState
     {
         Chasing,
         Attacking,
@@ -19,9 +15,10 @@ public class DragonAI : MonoBehaviour
 
     [SerializeField] private int maxHP = 30;
     [SerializeField] private DragonAnimator dragonAnimator;
-    public bool IsDead => state == State.Dead;
+    public bool IsDead => state == EnemyState.Dead;
 
-    private GameObject player;
+    private EnemyState state = EnemyState.Chasing;
+    private PlayerController player;
     private int currentHp;
     private bool initialized = false;
 
@@ -33,18 +30,18 @@ public class DragonAI : MonoBehaviour
         currentHp = maxHP;
         var renderers = GetComponentsInChildren<Renderer>();
 
-        foreach (var ren in renderers)
+        foreach (var renderer in renderers)
         {
-            for (int i = 0; i < ren.materials.Length; i++)
+            for (int i = 0; i < renderer.materials.Length; i++)
             {
-                Debug.Log($"Check material on Dragon {name} renderer {ren.name} slot{i}");
-                if (ren.materials[i] == null)
+                Debug.Log($"Check material on Dragon {name} renderer {renderer.name} slot{i}");
+                if (renderer.materials[i] == null)
                 {
-                    Debug.LogError($"Missing material on Dragon {name} renderer {ren.name} slot{i}");
+                    Debug.LogError($"Missing material on Dragon {name} renderer {renderer.name} slot{i}");
                 }
             }
         }
-        Debug.Log("iniy");
+
         initialized = true;
     }
 
@@ -52,12 +49,10 @@ public class DragonAI : MonoBehaviour
     {
         while (player == null)
         {
-            player = GameObject.FindObjectOfType<PlayerController>()?.gameObject;
+            player = GameObject.FindObjectOfType<PlayerController>();
             await UniTask.Yield();
         }
     }
-
-    private State state = State.Chasing;
 
     private void Update()
     {
@@ -68,7 +63,7 @@ public class DragonAI : MonoBehaviour
 
         switch (state)
         {
-            case State.Chasing:
+            case EnemyState.Chasing:
             {
                 if (player == null) return;
 
@@ -77,17 +72,16 @@ public class DragonAI : MonoBehaviour
                 transform.Translate(Vector3.forward * Time.deltaTime * 2);
                 if (Vector3.Distance(transform.position, player.transform.position) < 10)
                 {
-                    state = State.Attacking;
+                    state = EnemyState.Attacking;
                 }
                 break;
             }
-            case State.Attacking:
+            case EnemyState.Attacking:
             {
-                dragonAnimator.PlayAttackAnimation();
-                GameObject.Find("UI").SendMessage("ShowTextAndQuit", "YOU DIEDED");
+                Attack();
                 break;
             }
-            case State.Dead:
+            case EnemyState.Dead:
             {
                 dragonAnimator.PlayDeadAnimation();
                 break;
@@ -99,11 +93,17 @@ public class DragonAI : MonoBehaviour
         }
     }
 
+    private void Attack()
+    {
+        player.Hit();
+        dragonAnimator.PlayAttackAnimation();
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Trap")
         {
-            state = State.Dead;
+            state = EnemyState.Dead;
         }
     }
 
@@ -114,7 +114,7 @@ public class DragonAI : MonoBehaviour
         if (currentHp <= 0)
         {
             DeathEvent?.Invoke(this);
-            state = State.Dead;
+            state = EnemyState.Dead;
         }
     }
 }

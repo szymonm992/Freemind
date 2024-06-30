@@ -1,24 +1,43 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace DragonsGame.UI
 {
     public class GameUi : MonoBehaviour
     {
+        private const string PLAYER_DIED_MESSAGE = "You died!";
+
         [SerializeField] private Text label;
         [SerializeField] private Text enemiesLabel;
         [SerializeField] private EnemiesManager dragonSpawner;
 
-        public void ShowTextAndQuit(string message)
-        {
-            StartCoroutine(ShowTextAneQuitCoroutine(message));
-        }
+        private PlayerController playerController;
 
-        private void Awake()
+        private async void Awake()
         {
             dragonSpawner.DragonSpawnedEvent += OnDragonsPoolChanged;
             dragonSpawner.DragonDiedEvent += OnDragonsPoolChanged;
+
+            await WaitForPlayer();
+
+            playerController.DeathEvent += OnPlayerDied;
+        }
+
+        private void OnPlayerDied()
+        {
+            ShowTextAndQuit(PLAYER_DIED_MESSAGE).Forget();
+        }
+
+        private async UniTask WaitForPlayer()
+        {
+            while (playerController == null)
+            {
+                playerController = GameObject.FindObjectOfType<PlayerController>();
+                await UniTask.Yield();
+            }
         }
 
         private void OnDragonsPoolChanged()
@@ -35,13 +54,14 @@ namespace DragonsGame.UI
         {
             dragonSpawner.DragonSpawnedEvent -= OnDragonsPoolChanged;
             dragonSpawner.DragonDiedEvent -= OnDragonsPoolChanged;
+            playerController.DeathEvent -= OnPlayerDied;
         }
 
-        private IEnumerator ShowTextAneQuitCoroutine(string message)
+        private async UniTask ShowTextAndQuit(string message)
         {
-            yield return new WaitForSeconds(0.3f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.3d)); 
             ShowLabel(message);
-            yield return new WaitForSeconds(0.5f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5d));
             Stop();
         }
 
@@ -53,9 +73,9 @@ namespace DragonsGame.UI
 
         private void Stop()
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#endif
+            #endif
             Debug.Log("Level complete, stopping playmode\n");
         }
     }

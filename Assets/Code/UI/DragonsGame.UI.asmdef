@@ -2,7 +2,8 @@
     "name": "DragonsGame.UI",
     "rootNamespace": "",
     "references": [
-        "GUID:f6a6d7e1d1df3434cbfc0a5ab867cc8e"
+        "GUID:f6a6d7e1d1df3434cbfc0a5ab867cc8e",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
