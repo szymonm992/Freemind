@@ -10,7 +10,7 @@ namespace DragonsGame
 
         public event Action<DragonAI> DeathEvent;
 
-        public bool IsDead => state == EnemyState.Dead;
+        public bool IsDead => currentState == EnemyState.Dead;
 
         public enum EnemyState
         {
@@ -24,10 +24,11 @@ namespace DragonsGame
         [SerializeField] private float playerAttackDistanceThreshold = 10f;
         [SerializeField] private DragonAnimator dragonAnimator;
 
-        private EnemyState state = EnemyState.Chasing;
+        private EnemyState currentState = EnemyState.Chasing;
         private PlayerController player;
         private int currentHp;
         private bool initialized = false;
+        private float playerAttackDistanceThresholdSqr; 
 
         public void DealDamage(int damage)
         {
@@ -60,6 +61,7 @@ namespace DragonsGame
                 }
             }
 
+            playerAttackDistanceThresholdSqr = playerAttackDistanceThreshold * playerAttackDistanceThreshold;
             initialized = true;
         }
 
@@ -79,7 +81,7 @@ namespace DragonsGame
                 return;
             }
 
-            switch (state)
+            switch (currentState)
             {
                 case EnemyState.Chasing:
                 {
@@ -91,10 +93,13 @@ namespace DragonsGame
                     transform.LookAt(player.transform);
                     dragonAnimator.PlayWalkAnimation();
                     transform.Translate(Vector3.forward * Time.deltaTime * movementSpeed);
-                    if (Vector3.Distance(transform.position, player.transform.position) < playerAttackDistanceThreshold)
+
+                    Vector3 directionToPlayer = player.transform.position - transform.position;
+                    if (directionToPlayer.sqrMagnitude < playerAttackDistanceThresholdSqr)
                     {
-                        state = EnemyState.Attacking;
+                        currentState = EnemyState.Attacking;
                     }
+
                     break;
                 }
                 case EnemyState.Attacking:
@@ -130,7 +135,7 @@ namespace DragonsGame
 
         private void Die()
         {
-            state = EnemyState.Dead;
+            currentState = EnemyState.Dead;
         }
     }
 }

@@ -23,11 +23,10 @@ namespace DragonsGame
 
         private void Awake()
         {
-            Application.targetFrameRate = 120;
             instance = this;
             player = Instantiate(playerPrefab);
             ResetPlayerPosition();
-            player.name = "Player";
+            player.name = PlayerController.PLAYER_NAME_STRING;
             gameObject.SetActive(false);
         }
     }

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,8 +7,7 @@ namespace DragonsGame
 {
     public class SawAnimation : MonoBehaviour
     {
-        private List<Bullet> bullets = new List<Bullet>();
-        private int bulletsCount = 0;
+        [SerializeField] private float rotationSpeed = 20f;
 
         private void Update()
         {
@@ -16,29 +16,7 @@ namespace DragonsGame
 
         private void ChangeSawRotation()
         {
-            var player = FindObjectOfType<PlayerController>();
-            bullets = FindObjectsOfType<Bullet>().ToList();
-            Random.seed = (int)(player.transform.position.x + player.transform.position.y + player.transform.position.z);
-            bulletsCount = CalculateBulletsCount(bullets);
-            var angleDiff = Random.value * bulletsCount;
-            gameObject.transform.Rotate(angleDiff, 0, 0);
-        }
-
-        private int CalculateBulletsCount(List<Bullet> bullets)
-        {
-            bulletsCount = 0;
-
-            foreach (var bullet in bullets)
-            {
-                bulletsCount++;
-            }
-
-            if (bulletsCount < 10)
-            {
-                bulletsCount = 10;
-            }
-
-            return bulletsCount;
+           transform.Rotate (rotationSpeed * Time.deltaTime,0,0);
         }
     }
 }

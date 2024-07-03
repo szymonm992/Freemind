@@ -5,6 +5,8 @@ namespace DragonsGame
 {
     public class PlayerController : MonoBehaviour
     {
+        public const string PLAYER_NAME_STRING = "Player";
+
         public event Action DeathEvent;
 
         [SerializeField] private Weapon weapon;
