@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace DragonsGame
@@ -29,6 +28,7 @@ namespace DragonsGame
         {
             return shotDeadline > Time.timeSinceLevelLoad;
         }
+
         private void SetNextShootDeadline()
         {
             shotDeadline = Time.timeSinceLevelLoad + 1 / bulletsPerSeconds;

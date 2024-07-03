@@ -6,9 +6,11 @@ namespace DragonsGame
 {
     public class DragonAI : MonoBehaviour
     {
-        private const string TRAP_TAG = "Trap";
+        public const string TRAP_TAG = "Trap";
 
         public event Action<DragonAI> DeathEvent;
+
+        public bool IsDead => state == EnemyState.Dead;
 
         public enum EnemyState
         {
@@ -21,12 +23,22 @@ namespace DragonsGame
         [SerializeField] private float movementSpeed = 2f;
         [SerializeField] private float playerAttackDistanceThreshold = 10f;
         [SerializeField] private DragonAnimator dragonAnimator;
-        public bool IsDead => state == EnemyState.Dead;
 
         private EnemyState state = EnemyState.Chasing;
         private PlayerController player;
         private int currentHp;
         private bool initialized = false;
+
+        public void DealDamage(int damage)
+        {
+            currentHp -= damage;
+
+            if (currentHp <= 0)
+            {
+                DeathEvent?.Invoke(this);
+                Die();
+            }
+        }
 
         private async void Start()
         {
@@ -116,21 +128,9 @@ namespace DragonsGame
             }
         }
 
-        public void DealDamage(int damage)
-        {
-            currentHp -= damage;
-
-            if (currentHp <= 0)
-            {
-                DeathEvent?.Invoke(this);
-                Die();
-            }
-        }
-
         private void Die()
         {
             state = EnemyState.Dead;
         }
     }
-
 }
